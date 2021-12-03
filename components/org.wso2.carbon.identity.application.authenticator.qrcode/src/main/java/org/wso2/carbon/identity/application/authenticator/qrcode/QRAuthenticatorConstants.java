@@ -28,6 +28,11 @@ public abstract class QRAuthenticatorConstants {
     public static final String QR_PAGE = "/authenticationendpoint/qrpage.jsp";
     public static final String PROCEED_AUTH = "proceedAuthorization";
     public static final String SESSION_DATA_KEY = "sessionDataKey";
-    public static final String TOKEN_DEVICE_ID = "did";
     public static final String CONTEXT_AUTH_DATA = "authData";
+    public static final String TOKEN_DEVICE_ID = "did";
+    public static final String TOKEN_USER_NAME = "usr";
+    public static final String TOKEN_RESPONSE = "res";
+    public static final String TOKEN_SESSION_DATA_KEY = "sid";
+    public static final String AUTH_REQUEST_STATUS_SUCCESS = "SUCCESSFUL";
+    public static final String AUTH_REQUEST_STATUS_DENIED = "DENIED";
 }

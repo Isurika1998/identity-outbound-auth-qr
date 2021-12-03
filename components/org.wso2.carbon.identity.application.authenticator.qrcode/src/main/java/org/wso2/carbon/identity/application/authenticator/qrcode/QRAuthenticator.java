@@ -26,6 +26,7 @@ import org.wso2.carbon.identity.application.authentication.framework.LocalApplic
 import org.wso2.carbon.identity.application.authentication.framework.context.AuthenticationContext;
 import org.wso2.carbon.identity.application.authentication.framework.exception.AuthenticationFailedException;
 import org.wso2.carbon.identity.application.authentication.framework.inbound.InboundConstants;
+import org.wso2.carbon.identity.application.authentication.framework.model.AuthenticatedUser;
 import org.wso2.carbon.identity.application.authenticator.qrcode.common.QRAuthContextManager;
 import org.wso2.carbon.identity.application.authenticator.qrcode.common.QRJWTValidator;
 import org.wso2.carbon.identity.application.authenticator.qrcode.common.exception.QRAuthTokenValidationException;
@@ -110,9 +111,43 @@ public class QRAuthenticator extends AbstractApplicationAuthenticator implements
 
         String deviceId = getDeviceIdFromToken(authResponseToken);
        // String publicKey = getPublicKey(deviceId);
-
+        String publicKey = "public key";
         QRJWTValidator validator = new QRJWTValidator();
         JWTClaimsSet claimsSet;
+
+        try {
+            claimsSet = validator.getValidatedClaimSet(authResponseToken, publicKey);
+        } catch (QRAuthTokenValidationException e) {
+            String errorMessage = String
+                    .format("Error occurred when trying to validate the JWT signature from device: %s.", deviceId);
+            throw new AuthenticationFailedException(errorMessage, e);
+        }
+        if (claimsSet != null) {
+
+            String authStatus =
+                    getClaimFromClaimSet(claimsSet, QRAuthenticatorConstants.TOKEN_RESPONSE, deviceId);
+
+            if (authStatus.equals(QRAuthenticatorConstants.AUTH_REQUEST_STATUS_SUCCESS)) {
+                context.setProperty(QRAuthenticatorConstants.USER_NAME,
+                        getClaimFromClaimSet(claimsSet, QRAuthenticatorConstants.TOKEN_USER_NAME, deviceId));
+            } else if (authStatus.equals(QRAuthenticatorConstants.AUTH_REQUEST_STATUS_DENIED)) {
+//               redirectRetryPage(httpServletResponse, PushAuthenticatorConstants.AUTH_DENIED_PARAM,
+//                        PushAuthenticatorConstants.AUTH_DENIED_MESSAGE, user);
+            } else {
+                String errorMessage = String.format("Authentication failed! Auth status for user" +
+                        " '%s' is not available in JWT.",
+                        getClaimFromClaimSet(claimsSet, QRAuthenticatorConstants.TOKEN_USER_NAME, deviceId));
+//                throw new AuthenticationFailedException(errorMessage);
+            }
+        } else {
+            String errorMessage = String
+                    .format("Authentication failed! JWT signature is not valid for device: %s of user: %s.",
+                            deviceId, getClaimFromClaimSet(claimsSet, QRAuthenticatorConstants.TOKEN_USER_NAME, deviceId));
+            throw new AuthenticationFailedException(errorMessage);
+        }
+
+        contextManager.clearContext(getClaimFromClaimSet(claimsSet,
+                QRAuthenticatorConstants.TOKEN_SESSION_DATA_KEY, deviceId));
 
     }
 
@@ -131,6 +166,27 @@ public class QRAuthenticator extends AbstractApplicationAuthenticator implements
         } catch (ParseException e) {
             throw new AuthenticationFailedException("Error occurred when trying to get the device ID from the "
                     + "auth response token.", e);
+        }
+    }
+
+    /**
+     * Get JWT claim from the claim set.
+     *
+     * @param claimsSet JWT claim set
+     * @param claim     Required claim
+     * @param deviceId  Device ID
+     * @return Claim string
+     * @throws AuthenticationFailedException if an error occurs while getting a claim
+     */
+    protected String getClaimFromClaimSet(JWTClaimsSet claimsSet, String claim, String deviceId)
+            throws AuthenticationFailedException {
+
+        try {
+            return claimsSet.getStringClaim(claim);
+        } catch (ParseException e) {
+            String errorMessage = String.format("Failed to get %s from the auth response token received from device: "
+                    + "%s.", claim, deviceId);
+            throw new AuthenticationFailedException(errorMessage, e);
         }
     }
 
