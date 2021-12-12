@@ -25,5 +25,4 @@ package org.wso2.carbon.identity.application.authenticator.qrcode.common;
 public class QRAuthCommonConstants {
 
     public static final String SIGNING_ALGORITHM = "RSA";
-
 }

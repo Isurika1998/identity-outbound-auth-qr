@@ -48,5 +48,4 @@ public interface QRAuthContextManager {
      * @param key Unique key for identifying the authentication context for the session
      */
     void clearContext(String key);
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com).
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -14,23 +14,19 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-package org.wso2.carbon.identity.application.authenticator.qrcode.common.exception;
+package org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.factories;
 
-/**
- * Exception class for JWT validations
- */
-public class QRAuthTokenValidationException extends IdentityQRAuthException {
+import org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.DefaultApiService;
+import org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.impl.DefaultApiServiceImpl;
 
-    public QRAuthTokenValidationException(String message) {
+public class DefaultApiServiceFactory {
 
-        super(message);
-    }
+   private final static DefaultApiService service = new DefaultApiServiceImpl();
 
-    public QRAuthTokenValidationException(String message, Throwable e) {
-
-        super(message, e);
-    }
+   public static DefaultApiService getDefaultApi()
+   {
+      return service;
+   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.wso2.carbon.identity.application.authenticator.qrcode.internal;
 
 import org.apache.commons.logging.Log;
@@ -25,19 +26,26 @@ import org.wso2.carbon.identity.application.authentication.framework.Application
 import org.wso2.carbon.identity.application.authenticator.qrcode.QRAuthenticator;
 import org.wso2.carbon.user.core.service.RealmService;
 
-
+/**
+ * Service component class for the QR Authenticator initialization.
+ */
 @Component(
         name = "identity.application.authenticator.qrcode.QRAuthenticatorServiceComponent",
         immediate = true)
-
 public class QRAuthenticatorServiceComponent {
 
-    private static Log log = LogFactory.getLog(QRAuthenticatorServiceComponent.class);
+    private static final Log log = LogFactory.getLog(QRAuthenticatorServiceComponent.class);
 
     private static RealmService realmService;
 
+    /**
+     * This method is to register the QR authenticator service.
+     *
+     * @param ctxt The Component Context
+     */
     @Activate
     protected void activate(ComponentContext ctxt) {
+
         try {
             QRAuthenticator qrAuth = new QRAuthenticator();
             ctxt.getBundleContext().registerService(ApplicationAuthenticator.class.getName(), qrAuth, null);
@@ -49,8 +57,14 @@ public class QRAuthenticatorServiceComponent {
         }
     }
 
+    /**
+     * This method is to deactivate the QR authenticator the service.
+     *
+     * @param ctxt The Component Context
+     */
     @Deactivate
     protected void deactivate(ComponentContext ctxt) {
+
         if (log.isDebugEnabled()) {
             log.info("QRAuthenticator bundle is deactivated");
         }
@@ -61,21 +75,21 @@ public class QRAuthenticatorServiceComponent {
         return realmService;
     }
 
-    @Reference(name = "realm.service",
-            service = RealmService.class,
+    @Reference(
+            name = "realm.service",
+            service = org.wso2.carbon.user.core.service.RealmService.class,
             cardinality = ReferenceCardinality.MANDATORY,
             policy = ReferencePolicy.DYNAMIC,
             unbind = "unsetRealmService")
-
     protected void setRealmService(RealmService realmService) {
+
         log.debug("Setting the Realm Service");
         QRAuthenticatorServiceComponent.realmService = realmService;
     }
 
     protected void unsetRealmService(RealmService realmService) {
+
         log.debug("UnSetting the Realm Service");
         QRAuthenticatorServiceComponent.realmService = null;
     }
-
-
 }

@@ -48,8 +48,8 @@ public class QRAuthContextCache extends
     /**
      * Store authentication context to the session data store.
      *
-     * @param id SessionDataKey for the session
-     * @param entry QRAuthContextCacheEntry containing QR authentication context
+     * @param id SessionDataKey for the session.
+     * @param entry QRAuthContextCacheEntry containing QR authentication context.
      */
     private void storeToSessionStore(String id, QRAuthContextCacheEntry entry) {
 
@@ -59,8 +59,8 @@ public class QRAuthContextCache extends
     /**
      * Gets the QR authentication context from SessionDataStore by the SessionDataKey.
      *
-     * @param id SessionDataKey used as the ID
-     * @return QR authentication context
+     * @param id SessionDataKey used as the ID.
+     * @return QR authentication context.
      */
     private QRAuthContextCacheEntry getFromSessionStore(String id) {
 
@@ -70,7 +70,7 @@ public class QRAuthContextCache extends
     /**
      * Remove cached authentication context by SessionDataKey.
      *
-     * @param id SessionDataKey for the session
+     * @param id SessionDataKey for the session.
      */
     private void clearFromSessionStore(String id) {
 
@@ -80,7 +80,7 @@ public class QRAuthContextCache extends
     /**
      * Clear stored cache under the SessionDataKey.
      *
-     * @param key QRAuthenticationContextKey with SessionDataKey
+     * @param key QRAuthenticationContextKey with SessionDataKey.
      */
     public void clearCacheEntryByRequestId(QRAuthContextCacheKey key) {
 
@@ -91,22 +91,21 @@ public class QRAuthContextCache extends
     /**
      * Add the authentication context to cache by the SessionDataKey.
      *
-     * @param key QRAuthenticationContextKey with SessionDataKey
-     * @param entry QRAuthenticationCacheEntry containing authentication context
+     * @param key QRAuthenticationContextKey with SessionDataKey.
+     * @param entry QRAuthenticationCacheEntry containing authentication context.
      */
     public void addToCacheByRequestId(QRAuthContextCacheKey key,
                                       QRAuthContextCacheEntry entry) {
 
         super.addToCache(key, entry);
         storeToSessionStore(key.getRequestId(), entry);
-
     }
 
     /**
      * Gets the QR authentication context from cache by the SessionDataKey.
      *
-     * @param key QRAuthenticationContextKey with SessionDataKey
-     * @return QRAuthenticationCacheEntry containing authentication context
+     * @param key QRAuthenticationContextKey with SessionDataKey.
+     * @return QRAuthenticationCacheEntry containing authentication context.
      */
     public QRAuthContextCacheEntry getValueFromCacheByRequestId(QRAuthContextCacheKey key) {
 

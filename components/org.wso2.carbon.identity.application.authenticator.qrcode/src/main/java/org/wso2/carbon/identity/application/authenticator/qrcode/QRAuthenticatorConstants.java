@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,7 +18,7 @@
 package org.wso2.carbon.identity.application.authenticator.qrcode;
 
 /**
- * Constants used by the QRAuthenticator
+ * Constants used by the QRAuthenticator.
  */
 public abstract class QRAuthenticatorConstants {
 
@@ -29,7 +29,7 @@ public abstract class QRAuthenticatorConstants {
     public static final String PROCEED_AUTH = "proceedAuthorization";
     public static final String SESSION_DATA_KEY = "sessionDataKey";
     public static final String CONTEXT_AUTH_DATA = "authData";
-    public static final String TOKEN_DEVICE_ID = "did";
+    public static final String TOKEN_DEVICE_ID = "deviceId";
     public static final String TOKEN_USER_NAME = "usr";
     public static final String TOKEN_RESPONSE = "res";
     public static final String TOKEN_SESSION_DATA_KEY = "sid";

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com).
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -14,28 +14,19 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-package org.wso2.carbon.identity.application.authenticator.qrcode.dto;
+package org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.factories;
 
-import java.io.Serializable;
+import org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.MeApiService;
+import org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.impl.MeApiServiceImpl;
 
-/**
- * DTO class for holding authentication data.
- */
-public class AuthDataDTO implements Serializable {
+public class MeApiServiceFactory {
 
-    private static final long serialVersionUID = 5355319579322887235L;
-    private String authToken;
+   private final static MeApiService service = new MeApiServiceImpl();
 
-    public void setAuthToken(String authToken) {
-
-        this.authToken = authToken;
-    }
-
-    public String getAuthToken() {
-
-        return this.authToken;
-    }
+   public static MeApiService getMeApi()
+   {
+      return service;
+   }
 }

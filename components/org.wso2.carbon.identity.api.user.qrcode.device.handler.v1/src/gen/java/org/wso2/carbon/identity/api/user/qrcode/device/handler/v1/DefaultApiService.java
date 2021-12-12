@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com).
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -14,28 +14,20 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-package org.wso2.carbon.identity.application.authenticator.qrcode.dto;
+package org.wso2.carbon.identity.api.user.qrcode.device.handler.v1;
 
-import java.io.Serializable;
+import javax.ws.rs.core.Response;
 
 /**
- * DTO class for holding authentication data.
+ * DefaultApiService.
  */
-public class AuthDataDTO implements Serializable {
+public interface DefaultApiService {
 
-    private static final long serialVersionUID = 5355319579322887235L;
-    private String authToken;
+      public Response userIdQrAuthDevicesDeviceIdDelete(String userId, String deviceId);
 
-    public void setAuthToken(String authToken) {
+      public Response userIdQrAuthDevicesDeviceIdGet(String userId, String deviceId);
 
-        this.authToken = authToken;
-    }
-
-    public String getAuthToken() {
-
-        return this.authToken;
-    }
+      public Response userIdQrAuthDevicesGet(String userId);
 }

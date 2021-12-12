@@ -28,7 +28,7 @@ import com.nimbusds.jwt.SignedJWT;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wso2.carbon.identity.application.authenticator.qrcode.common.exception.QRAuthTokenValidationException;
+import org.wso2.carbon.identity.application.authenticator.qrcode.common.exception.IdentityQRAuthException;
 
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -51,52 +51,49 @@ public class QRJWTValidator {
     /**
      * Validate JWT.
      *
-     * @param jwt       JWT to be validated
-     * @param publicKey Public key the JWT has been signed with
-     * @return Boolean value for validation
-     * @throws QRAuthTokenValidationException
+     * @param jwt       JWT to be validated.
+     * @param publicKey Public key the JWT has been signed with.
+     * @return Boolean value for validation.
      */
-    public JWTClaimsSet getValidatedClaimSet(String jwt, String publicKey)
-            throws QRAuthTokenValidationException {
+    public JWTClaimsSet getValidatedClaimSet(String jwt, String publicKey) throws IdentityQRAuthException {
 
         if (!isJWT(jwt)) {
-            throw new QRAuthTokenValidationException("Token is not a valid JWT.");
+            throw new IdentityQRAuthException("Token is not a valid JWT.");
         }
 
         try {
             SignedJWT signedJWT = SignedJWT.parse(jwt);
             JWTClaimsSet claimsSet = signedJWT.getJWTClaimsSet();
             if (claimsSet == null) {
-                throw new QRAuthTokenValidationException("Token validation failed. Claim values were not found.");
+                throw new IdentityQRAuthException("Token validation failed. Claim values were not found.");
             }
 
             if (!validateSignature(publicKey, signedJWT)) {
-                throw new QRAuthTokenValidationException("Token signature validation failed.");
+                throw new IdentityQRAuthException("Token signature validation failed.");
             }
 
             if (!checkExpirationTime(claimsSet.getExpirationTime())) {
-                throw new QRAuthTokenValidationException("Token validation failed. JWT is expired.");
+                throw new IdentityQRAuthException("Token validation failed. JWT is expired.");
             }
             if (!checkNotBeforeTime(claimsSet.getNotBeforeTime())) {
-                throw new QRAuthTokenValidationException("Token validation failed. JWT is not active.");
+                throw new IdentityQRAuthException("Token validation failed. JWT is not active.");
             }
 
             return claimsSet;
         } catch (ParseException e) {
-            throw new QRAuthTokenValidationException("Error occurred while validating jwt", e);
+            throw new IdentityQRAuthException("Error occurred while validating jwt", e);
         }
     }
 
     /**
      * Validate the signature of the JWT.
      *
-     * @param publicKeyStr Public key for used for signing the JWT
-     * @param signedJWT    Signed JWT
-     * @return Boolean value for signature validation
-     * @throws QRAuthTokenValidationException Error when validating the signature
+     * @param publicKeyStr Public key for used for signing the JWT.
+     * @param signedJWT    Signed JWT.
+     * @return Boolean value for signature validation.
+     * @throws IdentityQRAuthException Error when validating the signature.
      */
-    private boolean validateSignature(String publicKeyStr, SignedJWT signedJWT)
-            throws QRAuthTokenValidationException {
+    private boolean validateSignature(String publicKeyStr, SignedJWT signedJWT) throws IdentityQRAuthException {
 
         try {
             byte[] publicKeyData = Base64.getDecoder().decode(publicKeyStr);
@@ -107,15 +104,15 @@ public class QRJWTValidator {
             JWSVerifier verifier = new RSASSAVerifier(publicKey);
             return signedJWT.verify(verifier);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException | JOSEException e) {
-            throw new QRAuthTokenValidationException("Error occurred when validating token signature.", e);
+            throw new IdentityQRAuthException("Error occurred when validating token signature.", e);
         }
     }
 
     /**
      * Validate if the JWT is expired.
      *
-     * @param expirationTime Time set for the JWT to expire
-     * @return Boolean validating if the JWT is not expired
+     * @param expirationTime Time set for the JWT to expire.
+     * @return Boolean validating if the JWT is not expired.
      */
     private boolean checkExpirationTime(Date expirationTime) {
 
@@ -128,8 +125,8 @@ public class QRJWTValidator {
     /**
      * Validate if the JWT is active.
      *
-     * @param notBeforeTime Time set to activate the JWT
-     * @return Boolean validating if the JWT is active
+     * @param notBeforeTime Time set to activate the JWT.
+     * @return Boolean validating if the JWT is active.
      */
     private boolean checkNotBeforeTime(Date notBeforeTime) {
 
@@ -138,10 +135,8 @@ public class QRJWTValidator {
             long notBeforeTimeMillis = notBeforeTime.getTime();
             long currentTimeInMillis = System.currentTimeMillis();
             return currentTimeInMillis + timeStampSkewMillis >= notBeforeTimeMillis;
-
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -167,5 +162,4 @@ public class QRJWTValidator {
             return false;
         }
     }
-
 }

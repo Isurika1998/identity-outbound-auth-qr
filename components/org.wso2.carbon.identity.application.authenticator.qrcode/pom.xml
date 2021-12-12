@@ -32,37 +32,31 @@
     <name>WSO2 Carbon - QRCode-Based Authenticator</name>
     <packaging>bundle</packaging>
 
-
     <dependencies>
         <dependency>
             <groupId>org.wso2.carbon</groupId>
             <artifactId>org.wso2.carbon.utils</artifactId>
-            <version>4.6.1</version>
         </dependency>
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
-            <version>1.2</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.identity.framework</groupId>
             <artifactId>org.wso2.carbon.identity.application.authentication.framework</artifactId>
-            <version>5.18.187</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.identity.application.authenticator.qrcode</groupId>
             <artifactId>org.wso2.carbon.authenticator.qrcode.common</artifactId>
-            <version>1.0.0</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.orbit.com.nimbusds</groupId>
             <artifactId>nimbus-jose-jwt</artifactId>
-            <version>5.8.0.wso2v1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.scr.ds-annotations</artifactId>
-            <version>1.2.8</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.osgi</groupId>
@@ -96,7 +90,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.1</version>
                 <configuration>
                     <source>8</source>
                     <target>8</target>
@@ -105,7 +98,6 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>3.2.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
@@ -113,19 +105,18 @@
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
                         <Import-Package>
                             org.osgi.framework,
-                            *;resolution:=optional,
-                            org.wso2.carbon.identity.application.authenticator.push.common,
-                            org.wso2.carbon.identity.application.authenticator.push.common.impl,
-                            org.wso2.carbon.identity.application.authenticator.push.common.exception,
+                            org.wso2.carbon.identity.application.authenticator.qrcode.common;version="${project.version}",
+                            org.wso2.carbon.identity.application.authenticator.qrcode.common.impl;version="${project.version}",
+                            org.wso2.carbon.identity.application.authenticator.qrcode.common.exception;version="${project.version}",
                         </Import-Package>
                         <Private-Package>
                             org.wso2.carbon.identity.application.authenticator.qrcode.internal,
                         </Private-Package>
                         <Export-Package>
                             !org.wso2.carbon.identity.application.authenticator.qrcode.internal,
-                            org.wso2.carbon.identity.application.authenticator.qrcode.*; version="1.0.0"
+                            org.wso2.carbon.identity.application.authenticator.qrcode,
+                            org.wso2.carbon.identity.application.authenticator.qrcode.dto
                         </Export-Package>
-                        <DynamicImport-Package>*</DynamicImport-Package>
                     </instructions>
                 </configuration>
             </plugin>

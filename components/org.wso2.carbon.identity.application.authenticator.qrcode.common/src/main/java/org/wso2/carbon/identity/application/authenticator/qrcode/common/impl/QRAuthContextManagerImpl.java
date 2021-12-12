@@ -35,7 +35,6 @@ public class QRAuthContextManagerImpl implements QRAuthContextManager {
 
         QRAuthContextCache.getInstance().addToCacheByRequestId(
                 new QRAuthContextCacheKey(key), new QRAuthContextCacheEntry(context));
-
     }
 
     @Override
