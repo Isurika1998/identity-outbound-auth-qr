@@ -34,5 +34,4 @@ public abstract class QRAuthenticatorConstants {
     public static final String TOKEN_RESPONSE = "res";
     public static final String TOKEN_SESSION_DATA_KEY = "sid";
     public static final String AUTH_REQUEST_STATUS_SUCCESS = "SUCCESSFUL";
-    public static final String AUTH_REQUEST_STATUS_DENIED = "DENIED";
 }

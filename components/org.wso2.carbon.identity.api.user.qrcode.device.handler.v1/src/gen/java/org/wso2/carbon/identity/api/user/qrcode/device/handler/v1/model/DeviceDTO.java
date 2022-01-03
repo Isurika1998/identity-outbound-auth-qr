@@ -19,25 +19,22 @@
 package org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import javax.validation.constraints.*;
 
-/**
- * The model for a registered device object
- **/
-
-import io.swagger.annotations.*;
 import java.util.Objects;
 import javax.validation.Valid;
-import javax.xml.bind.annotation.*;
+
+/**
+ * The model for a registered device object.
+ **/
 @ApiModel(description = "The model for a registered device object")
 public class DeviceDTO  {
   
     private String deviceId;
     private String name;
     private String model;
+    private String pushId;
     private Object registrationTime;
     private Object lastUsedTime;
 
@@ -96,6 +93,26 @@ public class DeviceDTO  {
     }
 
     /**
+     **/
+    public DeviceDTO pushId(String pushId) {
+
+        this.pushId = pushId;
+        return this;
+    }
+
+    @ApiModelProperty(example = "fuRr8s_eQrmB88nu5Tz8oa:APA91bFMqYbuzDYyOGK28VoiLHWYXZYzGNVg3tfxfNwKPH-" +
+            "jDIFpNDdUHkmq5wqBUySYZnuHfpycyQvUrPhwV3UZ1YzjUNLvb9gzFZudfJd1N3fWuU0w2nq_hVJc0UPRabvNPuJy8wMB",
+            value = "")
+    @JsonProperty("pushId")
+    @Valid
+    public String getPushId() {
+        return pushId;
+    }
+    public void setPushId(String pushId) {
+        this.pushId = pushId;
+    }
+
+    /**
     **/
     public DeviceDTO registrationTime(Object registrationTime) {
 
@@ -146,6 +163,7 @@ public class DeviceDTO  {
         return Objects.equals(this.deviceId, deviceDTO.deviceId) &&
             Objects.equals(this.name, deviceDTO.name) &&
             Objects.equals(this.model, deviceDTO.model) &&
+            Objects.equals(this.pushId, deviceDTO.pushId) &&
             Objects.equals(this.registrationTime, deviceDTO.registrationTime) &&
             Objects.equals(this.lastUsedTime, deviceDTO.lastUsedTime);
     }
@@ -164,6 +182,7 @@ public class DeviceDTO  {
         sb.append("    deviceId: ").append(toIndentedString(deviceId)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    model: ").append(toIndentedString(model)).append("\n");
+        sb.append("    pushId: ").append(toIndentedString(pushId)).append("\n");
         sb.append("    registrationTime: ").append(toIndentedString(registrationTime)).append("\n");
         sb.append("    lastUsedTime: ").append(toIndentedString(lastUsedTime)).append("\n");
         sb.append("}");
@@ -171,7 +190,7 @@ public class DeviceDTO  {
     }
 
     /**
-    * Convert the given object to string with each line indented by 4 spaces
+    * Convert the given object to string with each line indented by 4 spaces.
     * (except the first line).
     */
     private String toIndentedString(java.lang.Object o) {

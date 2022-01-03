@@ -19,19 +19,15 @@
 package org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import javax.validation.constraints.*;
 
-/**
- * Device registration information
- **/
-
-import io.swagger.annotations.*;
 import java.util.Objects;
 import javax.validation.Valid;
-import javax.xml.bind.annotation.*;
+
+/**
+ * Device registration information.
+ **/
 @ApiModel(description = "Device registration information")
 public class DiscoveryDataDTO  {
   
@@ -48,7 +44,7 @@ public class DiscoveryDataDTO  {
     private String chg;
 
     /**
-    * Device ID
+    * Device ID.
     **/
     public DiscoveryDataDTO did(String did) {
 
@@ -67,7 +63,7 @@ public class DiscoveryDataDTO  {
     }
 
     /**
-    * Username
+    * Username.
     **/
     public DiscoveryDataDTO un(String un) {
 
@@ -86,7 +82,7 @@ public class DiscoveryDataDTO  {
     }
 
     /**
-    * First name
+    * First name.
     **/
     public DiscoveryDataDTO fn(String fn) {
 
@@ -105,7 +101,7 @@ public class DiscoveryDataDTO  {
     }
 
     /**
-    * Last name
+    * Last name.
     **/
     public DiscoveryDataDTO ln(String ln) {
 
@@ -124,7 +120,7 @@ public class DiscoveryDataDTO  {
     }
 
     /**
-    * Tenant domain or Organisation
+    * Tenant domain or Organisation.
     **/
     public DiscoveryDataDTO td(String td) {
 
@@ -143,7 +139,7 @@ public class DiscoveryDataDTO  {
     }
 
     /**
-    * Base URL
+    * Base URL.
     **/
     public DiscoveryDataDTO hst(String hst) {
 
@@ -162,7 +158,7 @@ public class DiscoveryDataDTO  {
     }
 
     /**
-    * Base path for the me endpoints
+    * Base path for the me endpoints.
     **/
     public DiscoveryDataDTO bp(String bp) {
 
@@ -181,7 +177,7 @@ public class DiscoveryDataDTO  {
     }
 
     /**
-    * Registration endpoint
+    * Registration endpoint.
     **/
     public DiscoveryDataDTO re(String re) {
 
@@ -200,7 +196,7 @@ public class DiscoveryDataDTO  {
     }
 
     /**
-    * Authentication endpoint
+    * Authentication endpoint.
     **/
     public DiscoveryDataDTO ae(String ae) {
 
@@ -219,7 +215,7 @@ public class DiscoveryDataDTO  {
     }
 
     /**
-    * Remove device endpoint
+    * Remove device endpoint.
     **/
     public DiscoveryDataDTO rde(String rde) {
 
@@ -238,7 +234,7 @@ public class DiscoveryDataDTO  {
     }
 
     /**
-    * Challenge
+    * Challenge.
     **/
     public DiscoveryDataDTO chg(String chg) {
 
@@ -308,7 +304,7 @@ public class DiscoveryDataDTO  {
     }
 
     /**
-    * Convert the given object to string with each line indented by 4 spaces
+    * Convert the given object to string with each line indented by 4 spaces.
     * (except the first line).
     */
     private String toIndentedString(java.lang.Object o) {

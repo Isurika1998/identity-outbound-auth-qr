@@ -21,12 +21,15 @@ package org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.factories;
 import org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.MeApiService;
 import org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.impl.MeApiServiceImpl;
 
+/**
+ * MeApiServiceFactory.
+ */
 public class MeApiServiceFactory {
 
-   private final static MeApiService service = new MeApiServiceImpl();
+   private static final MeApiService service = new MeApiServiceImpl();
 
-   public static MeApiService getMeApi()
-   {
+   public static MeApiService getMeApi() {
+
       return service;
    }
 }

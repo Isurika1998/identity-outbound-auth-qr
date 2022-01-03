@@ -18,32 +18,49 @@
 
 package org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.impl;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.DefaultApiService;
+import org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.core.QRDeviceHandlerService;
+
 import javax.ws.rs.core.Response;
 
 /**
- * DefaultApiServiceImpl.
+ * Implementation class of QR device Handler Admin APIs .
  */
 public class DefaultApiServiceImpl implements DefaultApiService {
+
+    private static final Log log = LogFactory.getLog(DefaultApiServiceImpl.class);
+
+    @Autowired
+    private QRDeviceHandlerService deviceHandlerService;
 
     @Override
     public Response userIdQrAuthDevicesDeviceIdDelete(String userId, String deviceId) {
 
-        // do some magic!
-        return Response.ok().entity("magic!").build();
+        if (log.isDebugEnabled()) {
+            log.debug("Removing device : " + deviceId + " of User : " + userId + ".");
+        }
+        deviceHandlerService.unregisterDevice(deviceId);
+        return Response.noContent().build();
     }
 
     @Override
     public Response userIdQrAuthDevicesDeviceIdGet(String userId, String deviceId) {
 
-        // do some magic!
-        return Response.ok().entity("magic!").build();
+        if (log.isDebugEnabled()) {
+            log.debug("Fetching data of device : " + deviceId + " of user : " + userId + ".");
+        }
+        return Response.ok().entity(deviceHandlerService.getDevice(deviceId)).build();
     }
 
     @Override
     public Response userIdQrAuthDevicesGet(String userId) {
 
-        // do some magic!
-        return Response.ok().entity("magic!").build();
+        if (log.isDebugEnabled()) {
+            log.debug("Retrieving all devices of user : " + userId + ".");
+        }
+        return Response.ok().entity(deviceHandlerService.listDevices()).build();
     }
 }

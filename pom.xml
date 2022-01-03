@@ -30,6 +30,8 @@
         <module>components/org.wso2.carbon.identity.application.authenticator.qrcode</module>
         <module>components/org.wso2.carbon.identity.application.authenticator.qrcode.common</module>
         <module>components/org.wso2.carbon.identity.api.user.qrcode.device.handler.v1</module>
+        <module>components/org.wso2.carbon.identity.api.user.qrcode.device.common</module>
+        <module>components/org.wso2.carbon.identity.application.authenticator.qrcode.device.handler</module>
     </modules>
 
     <name>WSO2 Carbon - QRCode-Based Authenticator</name>
@@ -144,6 +146,29 @@
                 <version>${eclipse.osgi.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.service.component.annotations</artifactId>
+                <version>${org.osgi.service.component.annotations.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.service.component</artifactId>
+                <version>${org.osgi.service.component.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.core</artifactId>
+                <version>${org.osgi.core.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.framework</artifactId>
+                <version>${org.osgi.framework.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
                 <groupId>com.googlecode.json-simple</groupId>
                 <artifactId>json-simple</artifactId>
                 <version>${com.googlecode.json-simple.version}</version>
@@ -243,6 +268,12 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.plugin.version}</version>
+                <inherited>true</inherited>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
@@ -279,6 +310,10 @@
     <properties>
         <equinox.osgi.services.version>3.3.100.v20130513-1956</equinox.osgi.services.version>
         <eclipse.osgi.version>3.9.1.v20130814-1242</eclipse.osgi.version>
+        <org.osgi.service.component.annotations.version>1.3.0</org.osgi.service.component.annotations.version>
+        <org.osgi.framework.version>1.9.0</org.osgi.framework.version>
+        <org.osgi.service.component.version>1.4.0</org.osgi.service.component.version>
+        <org.osgi.core.version>6.0.0</org.osgi.core.version>
         <maven.compiler.plugin.version>2.3.1</maven.compiler.plugin.version>
         <maven.bundle.plugin.version>3.2.0</maven.bundle.plugin.version>
         <maven.scr.plugin.version>1.24.0</maven.scr.plugin.version>
@@ -291,6 +326,7 @@
         <com.google.code.gson.version>2.2.4</com.google.code.gson.version>
         <commons.logging.version>1.2</commons.logging.version>
         <org.apache.felix.annotations.version>1.2.8</org.apache.felix.annotations.version>
+        <org.apache.maven.compiler.plugin>2.0</org.apache.maven.compiler.plugin>
         <nimbusds.version>7.3.0.wso2v1</nimbusds.version>
         <project.version>1.0.0</project.version>
         <javax.ws.rs.version>2.1.1</javax.ws.rs.version>
@@ -303,10 +339,14 @@
         <identity.api.user.version>1.1.27</identity.api.user.version>
         <!-- Version Ranges -->
         <org.wso2.carbon.identity.version.range>[5.12,6)</org.wso2.carbon.identity.version.range>
+        <org.wso2.carbon.version.range>[4.6,5)</org.wso2.carbon.version.range>
+        <carbon.user.api.version.range>[1.0,2)</carbon.user.api.version.range>
         <osgi.framework.imp.pkg.version.range>[1.7.0, 2.0.0)</osgi.framework.imp.pkg.version.range>
         <osgi.service.component.imp.pkg.version.range>[1.2.0, 2.0.0)</osgi.service.component.imp.pkg.version.range>
         <org.apache.commons.version.range>[1.2,2)</org.apache.commons.version.range>
         <org.apache.commons.lang.version.range>[2.6,3)</org.apache.commons.lang.version.range>
         <com.nimbusds.version.range>[7.3,8)</com.nimbusds.version.range>
+        <org.osgi.service.version.range>[1.2,2)</org.osgi.service.version.range>
+        <org.osgi.framework.version.range>[1.8,2)</org.osgi.framework.version.range>
     </properties>
 </project>

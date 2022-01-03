@@ -19,19 +19,15 @@
 package org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import javax.validation.constraints.*;
 
-/**
- * Model for error codes
- **/
-
-import io.swagger.annotations.*;
 import java.util.Objects;
 import javax.validation.Valid;
-import javax.xml.bind.annotation.*;
+
+/**
+ * Model for error codes.
+ **/
 @ApiModel(description = "Model for error codes")
 public class ErrorDTO  {
   
@@ -150,7 +146,7 @@ public class ErrorDTO  {
     }
 
     /**
-    * Convert the given object to string with each line indented by 4 spaces
+    * Convert the given object to string with each line indented by 4 spaces.
     * (except the first line).
     */
     private String toIndentedString(java.lang.Object o) {

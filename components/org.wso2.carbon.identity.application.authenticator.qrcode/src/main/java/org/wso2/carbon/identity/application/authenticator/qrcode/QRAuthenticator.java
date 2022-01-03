@@ -23,6 +23,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.identity.application.authentication.framework.AbstractApplicationAuthenticator;
 import org.wso2.carbon.identity.application.authentication.framework.LocalApplicationAuthenticator;
+import org.wso2.carbon.identity.application.authentication.framework.config.model.StepConfig;
 import org.wso2.carbon.identity.application.authentication.framework.context.AuthenticationContext;
 import org.wso2.carbon.identity.application.authentication.framework.exception.AuthenticationFailedException;
 import org.wso2.carbon.identity.application.authentication.framework.inbound.InboundConstants;
@@ -37,15 +38,11 @@ import org.wso2.carbon.identity.application.common.model.User;
 import org.wso2.carbon.identity.core.ServiceURLBuilder;
 import org.wso2.carbon.identity.core.URLBuilderException;
 import org.wso2.carbon.user.api.UserRealm;
-import org.wso2.carbon.user.core.UserCoreConstants;
-import org.wso2.carbon.user.core.UserStoreException;
 import org.wso2.carbon.user.core.common.AbstractUserStoreManager;
-import org.wso2.carbon.user.core.common.AuthenticationResult;
-import org.wso2.carbon.user.core.constants.UserCoreClaimConstants;
-import org.wso2.carbon.utils.multitenancy.MultitenantUtils;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -153,25 +150,8 @@ public class QRAuthenticator extends AbstractApplicationAuthenticator implements
                     getClaimFromClaimSet(claimsSet, QRAuthenticatorConstants.TOKEN_RESPONSE, deviceId);
 
             if (authStatus.equals(QRAuthenticatorConstants.AUTH_REQUEST_STATUS_SUCCESS)) {
-//                context.setProperty(QRAuthenticatorConstants.USER_NAME,
-//                        getClaimFromClaimSet(claimsSet, QRAuthenticatorConstants.TOKEN_USER_NAME, deviceId));
-                String username = getClaimFromClaimSet(claimsSet, QRAuthenticatorConstants.TOKEN_USER_NAME, deviceId);
-                String password = "isurika123";
-                String requestTenantDomain = MultitenantUtils.getTenantDomain(username);
-                String tenantAwareUsername = MultitenantUtils.getTenantAwareUsername(username);
-                AbstractUserStoreManager userStoreManager = getUserStoreManager(username, requestTenantDomain);
-                AuthenticationResult authenticationResult;
-//                try {
-//                    authenticationResult = userStoreManager
-//                            .authenticateWithID(UserCoreClaimConstants.USERNAME_CLAIM_URI,
-//                            tenantAwareUsername, password, UserCoreConstants.DEFAULT_PROFILE);
-//                    AuthenticatedUser authenticatedUser = new AuthenticatedUser(authenticationResult
-//                    .getAuthenticatedUser().get());
-//                    context.setSubject(authenticatedUser);
-//                } catch (UserStoreException e) {
-//                    e.printStackTrace();
-//                }
-
+                AuthenticatedUser authenticatedUserFromContext = getAuthenticatedUser(context);
+                context.setSubject(authenticatedUserFromContext);
             } else {
                 String errorMessage = String.format("Authentication failed! Auth status for user" +
                         " '%s' is not available in JWT.",
@@ -185,6 +165,28 @@ public class QRAuthenticator extends AbstractApplicationAuthenticator implements
         }
         contextManager.clearContext(getClaimFromClaimSet(claimsSet,
                 QRAuthenticatorConstants.TOKEN_SESSION_DATA_KEY, deviceId));
+    }
+
+    /**
+     * Returns AuthenticatedUser object from context.
+     *
+     * @param context AuthenticationContext.
+     * @return AuthenticatedUser
+     */
+    public static AuthenticatedUser getAuthenticatedUser(AuthenticationContext context) {
+
+        AuthenticatedUser authenticatedUser = null;
+        Map<Integer, StepConfig> stepConfigMap = context.getSequenceConfig().getStepMap();
+        if (stepConfigMap != null) {
+            for (StepConfig stepConfig : stepConfigMap.values()) {
+                AuthenticatedUser authenticatedUserInStepConfig = stepConfig.getAuthenticatedUser();
+                if (stepConfig.isSubjectAttributeStep() && authenticatedUserInStepConfig != null) {
+                    authenticatedUser = new AuthenticatedUser(stepConfig.getAuthenticatedUser());
+                    break;
+                }
+            }
+        }
+        return authenticatedUser;
     }
 
     /**

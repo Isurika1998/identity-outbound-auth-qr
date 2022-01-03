@@ -138,15 +138,21 @@
             <artifactId>jackson-jaxrs-json-provider</artifactId>
             <scope>provided</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.wso2.carbon.identity.application.authenticator.qrcode</groupId>-->
-        <!--            <artifactId>org.wso2.carbon.identity.api.user.qrcode.device.common</artifactId>-->
-        <!--            <scope>provided</scope>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.wso2.carbon.identity.application.authenticator.qrcode</groupId>
+            <artifactId>org.wso2.carbon.identity.api.user.qrcode.device.common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.wso2.carbon.identity.user.api</groupId>
             <artifactId>org.wso2.carbon.identity.api.user.common</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.identity.application.authenticator.qrcode</groupId>
+            <artifactId>org.wso2.carbon.identity.application.authenticator.qrcode.device.handler</artifactId>
+            <scope>provided</scope>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.identity.application.authenticator.qrcode</groupId>

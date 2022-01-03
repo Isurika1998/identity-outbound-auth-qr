@@ -19,19 +19,16 @@
 package org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import javax.validation.constraints.*;
 
-/**
- * A JSONPatch document as defined by RFC 6902
- **/
-
-import io.swagger.annotations.*;
 import java.util.Objects;
 import javax.validation.Valid;
-import javax.xml.bind.annotation.*;
+import javax.validation.constraints.NotNull;
+
+/**
+ * A JSONPatch document as defined by RFC 6902.
+ **/
 @ApiModel(description = "A JSONPatch document as defined by RFC 6902")
 public class PatchDTO  {
   
@@ -40,7 +37,7 @@ public class PatchDTO  {
     private String value;
 
     /**
-    * The operation to be performed
+    * The operation to be performed.
     **/
     public PatchDTO operation(String operation) {
 
@@ -61,7 +58,7 @@ public class PatchDTO  {
     }
 
     /**
-    * Path for validating the operation
+    * Path for validating the operation.
     **/
     public PatchDTO path(String path) {
 
@@ -80,7 +77,7 @@ public class PatchDTO  {
     }
 
     /**
-    * The value to be used within the operations
+    * The value to be used within the operations.
     **/
     public PatchDTO value(String value) {
 
@@ -88,7 +85,8 @@ public class PatchDTO  {
         return this;
     }
     
-    @ApiModelProperty(example = "New device name", required = true, value = "The value to be used within the operations")
+    @ApiModelProperty(example = "New device name", required = true,
+            value = "The value to be used within the operations")
     @JsonProperty("value")
     @Valid
     @NotNull(message = "Property value cannot be null.")
@@ -136,7 +134,7 @@ public class PatchDTO  {
     }
 
     /**
-    * Convert the given object to string with each line indented by 4 spaces
+    * Convert the given object to string with each line indented by 4 spaces.
     * (except the first line).
     */
     private String toIndentedString(java.lang.Object o) {

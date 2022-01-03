@@ -18,47 +18,76 @@
 
 package org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.impl;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.wso2.carbon.identity.api.user.qrcode.device.common.util.QRDeviceApiConstants;
 import org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.MeApiService;
+import org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.core.QRDeviceHandlerService;
 import org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.model.RegistrationRequestDTO;
+
+import java.text.MessageFormat;
 import javax.ws.rs.core.Response;
 
+import static org.wso2.carbon.identity.api.user.common.ContextLoader.buildURIForHeader;
+
 /**
- * MeApiServiceImpl.
+ * Implementation class of QR device Handler User APIs.
  */
 public class MeApiServiceImpl implements MeApiService {
+
+    private static final Log log = LogFactory.getLog(MeApiServiceImpl.class);
+
+    @Autowired
+    private QRDeviceHandlerService qrDeviceHandlerService;
 
     @Override
     public Response meQrAuthDevicesDeviceIdDelete(String deviceId) {
 
-        // do some magic!
-        return Response.ok().entity("magic!").build();
+        if (log.isDebugEnabled()) {
+            log.debug(MessageFormat.format("Removing device : {0} ", deviceId));
+        }
+        qrDeviceHandlerService.unregisterDevice(deviceId);
+        return Response.noContent().build();
     }
 
     @Override
     public Response meQrAuthDevicesDeviceIdGet(String deviceId) {
 
-        // do some magic!
-        return Response.ok().entity("magic!").build();
+        if (log.isDebugEnabled()) {
+            log.debug(MessageFormat.format("Fetching data of device : {0}", deviceId));
+        }
+        return Response.ok().entity(qrDeviceHandlerService.getDevice(deviceId)).build();
     }
 
     @Override
     public Response meQrAuthDevicesGet() {
 
-        // do some magic!
-        return Response.ok().entity("magic!").build();
+        return Response.ok().entity(qrDeviceHandlerService.listDevices()).build();
     }
 
     @Override
-    public Response meQrAuthDevicesPost(RegistrationRequestDTO registrationRequestDTO) {
+    public Response meQrAuthDevicesPost(RegistrationRequestDTO registrationRequest) {
 
-        // do some magic!
-        return Response.ok().entity("magic!").build();
+        if (log.isDebugEnabled() && registrationRequest != null) {
+            log.debug("Received registration request from mobile device: "
+                    + registrationRequest.getDeviceId() + ".");
+        }
+        if (registrationRequest != null) {
+            qrDeviceHandlerService.registerDevice(registrationRequest);
+
+            String registeredDevicePath = String.format(QRDeviceApiConstants.V1_API_PATH_COMPONENT
+                    + QRDeviceApiConstants.QR_AUTH_GET_DEVICE_PATH, registrationRequest.getDeviceId());
+
+            return Response.created(buildURIForHeader(registeredDevicePath)).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 
     @Override
     public Response meQrAuthDiscoveryDataGet() {
 
-        // do some magic!
-        return Response.ok().entity("magic!").build();
+        return Response.ok().entity(qrDeviceHandlerService.getDiscoveryData()).build();
     }
 }

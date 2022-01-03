@@ -21,12 +21,15 @@ package org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.factories;
 import org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.DefaultApiService;
 import org.wso2.carbon.identity.api.user.qrcode.device.handler.v1.impl.DefaultApiServiceImpl;
 
+/**
+ * DefaultApiServiceFactory.
+ */
 public class DefaultApiServiceFactory {
 
-   private final static DefaultApiService service = new DefaultApiServiceImpl();
+   private static final DefaultApiService service = new DefaultApiServiceImpl();
 
-   public static DefaultApiService getDefaultApi()
-   {
+   public static DefaultApiService getDefaultApi() {
+
       return service;
    }
 }
