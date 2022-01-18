@@ -21,10 +21,11 @@ package org.wso2.carbon.identity.application.authenticator.qrcode.internal;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.osgi.service.component.ComponentContext;
-import org.osgi.service.component.annotations.*;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.wso2.carbon.identity.application.authentication.framework.ApplicationAuthenticator;
 import org.wso2.carbon.identity.application.authenticator.qrcode.QRAuthenticator;
-import org.wso2.carbon.user.core.service.RealmService;
 
 /**
  * Service component class for the QR Authenticator initialization.
@@ -35,8 +36,6 @@ import org.wso2.carbon.user.core.service.RealmService;
 public class QRAuthenticatorServiceComponent {
 
     private static final Log log = LogFactory.getLog(QRAuthenticatorServiceComponent.class);
-
-    private static RealmService realmService;
 
     /**
      * This method is to register the QR authenticator service.
@@ -70,26 +69,4 @@ public class QRAuthenticatorServiceComponent {
         }
     }
 
-    public static RealmService getRealmService() {
-
-        return realmService;
-    }
-
-    @Reference(
-            name = "realm.service",
-            service = org.wso2.carbon.user.core.service.RealmService.class,
-            cardinality = ReferenceCardinality.MANDATORY,
-            policy = ReferencePolicy.DYNAMIC,
-            unbind = "unsetRealmService")
-    protected void setRealmService(RealmService realmService) {
-
-        log.debug("Setting the Realm Service");
-        QRAuthenticatorServiceComponent.realmService = realmService;
-    }
-
-    protected void unsetRealmService(RealmService realmService) {
-
-        log.debug("UnSetting the Realm Service");
-        QRAuthenticatorServiceComponent.realmService = null;
-    }
 }
