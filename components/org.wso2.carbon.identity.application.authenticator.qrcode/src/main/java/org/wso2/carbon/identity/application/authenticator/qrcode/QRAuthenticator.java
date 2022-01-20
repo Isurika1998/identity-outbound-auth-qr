@@ -19,6 +19,7 @@ package org.wso2.carbon.identity.application.authenticator.qrcode;
 
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.identity.application.authentication.framework.AbstractApplicationAuthenticator;
@@ -27,8 +28,8 @@ import org.wso2.carbon.identity.application.authentication.framework.context.Aut
 import org.wso2.carbon.identity.application.authentication.framework.exception.AuthenticationFailedException;
 import org.wso2.carbon.identity.application.authentication.framework.inbound.InboundConstants;
 import org.wso2.carbon.identity.application.authenticator.qrcode.common.QRAuthContextManager;
-import org.wso2.carbon.identity.application.authenticator.qrcode.common.QRJWTValidator;
-import org.wso2.carbon.identity.application.authenticator.qrcode.common.exception.IdentityQRAuthException;
+//import org.wso2.carbon.identity.application.authenticator.qrcode.common.QRJWTValidator;
+//import org.wso2.carbon.identity.application.authenticator.qrcode.common.exception.IdentityQRAuthException;
 import org.wso2.carbon.identity.application.authenticator.qrcode.common.impl.QRAuthContextManagerImpl;
 import org.wso2.carbon.identity.application.authenticator.qrcode.dto.AuthDataDTO;
 import org.wso2.carbon.identity.core.ServiceURLBuilder;
@@ -69,8 +70,7 @@ public class QRAuthenticator extends AbstractApplicationAuthenticator implements
     protected void initiateAuthenticationRequest(HttpServletRequest request, HttpServletResponse response,
                                                  AuthenticationContext context) throws AuthenticationFailedException {
 
-        //String tenantDomain = context.getTenantDomain();
-       // String host = context.getServiceProviderName();
+        String tenantDomain = context.getTenantDomain();
         String sessionDataKey = request.getParameter(InboundConstants.RequestProcessor.CONTEXT_KEY);
 
         AuthDataDTO authDataDTO = new AuthDataDTO();
@@ -78,7 +78,7 @@ public class QRAuthenticator extends AbstractApplicationAuthenticator implements
         QRAuthContextManager contextManager = new QRAuthContextManagerImpl();
         contextManager.storeContext(sessionDataKey, context);
 
-        redirectQRPage(response, sessionDataKey);
+        redirectQRPage(response, sessionDataKey, tenantDomain);
     }
 
     /**
@@ -88,13 +88,15 @@ public class QRAuthenticator extends AbstractApplicationAuthenticator implements
      * @param sessionDataKey The session data key.
      * @throws AuthenticationFailedException  If unable to redirect user to login page.
      */
-    private void redirectQRPage(HttpServletResponse response, String sessionDataKey)
+    private void redirectQRPage(HttpServletResponse response, String sessionDataKey, String tenantDomain)
             throws AuthenticationFailedException {
 
         try {
             String qrPage = ServiceURLBuilder.create().addPath(QRAuthenticatorConstants.LOGIN_PAGE)
-                    .addParameter(QRAuthenticatorConstants.SESSION_DATA_KEY, sessionDataKey).build()
-                    .getAbsolutePublicURL();
+                    .addParameter(QRAuthenticatorConstants.SESSION_DATA_KEY, sessionDataKey)
+                    .addParameter(QRAuthenticatorConstants.TENANT_DOMAIN, tenantDomain)
+                    .addParameter("AuthenticatorName", QRAuthenticatorConstants.AUTHENTICATOR_FRIENDLY_NAME)
+                    .build().getAbsolutePublicURL();
             response.sendRedirect(qrPage);
 
         } catch (IOException e) {
@@ -118,48 +120,65 @@ public class QRAuthenticator extends AbstractApplicationAuthenticator implements
     protected void processAuthenticationResponse(HttpServletRequest request, HttpServletResponse response,
                                                  AuthenticationContext context) throws AuthenticationFailedException {
 
-        QRAuthContextManager contextManager = new QRAuthContextManagerImpl();
-        AuthenticationContext sessionContext = contextManager.getContext(request
-                .getParameter(QRAuthenticatorConstants.SESSION_DATA_KEY));
-        AuthDataDTO authDataDTO = (AuthDataDTO) sessionContext
-                .getProperty(QRAuthenticatorConstants.CONTEXT_AUTH_DATA);
+        String tenantDomainFromRequest = request.getParameter(QRAuthenticatorConstants.TENANT_DOMAIN);
+        String tenantDomainFromContext = context.getTenantDomain();
 
-        String authResponseToken = authDataDTO.getAuthToken();
-
-        String deviceId = getDeviceIdFromToken(authResponseToken);
-       // String publicKey = getPublicKey(deviceId);
-        String publicKey = "public key";
-        QRJWTValidator validator = new QRJWTValidator();
-        JWTClaimsSet claimsSet;
-
-        try {
-            claimsSet = validator.getValidatedClaimSet(authResponseToken, publicKey);
-        } catch (IdentityQRAuthException e) {
+        if (!tenantDomainFromRequest.equals(tenantDomainFromContext)) {
             String errorMessage = String
-                    .format("Error occurred when trying to validate the JWT signature from device: %s.", deviceId);
-            throw new AuthenticationFailedException(errorMessage, e);
-        }
-        if (claimsSet != null) {
-
-            String authStatus =
-                    getClaimFromClaimSet(claimsSet, QRAuthenticatorConstants.TOKEN_RESPONSE, deviceId);
-
-            if (authStatus.equals(QRAuthenticatorConstants.AUTH_REQUEST_STATUS_SUCCESS)) {
-//                AuthenticatedUser authenticatedUserFromContext = getAuthenticatedUser(context);
-//                context.setSubject(authenticatedUserFromContext);
-            } else {
-                String errorMessage = String.format("Authentication failed! Auth status for user" +
-                        " '%s' is not available in JWT.",
-                        getClaimFromClaimSet(claimsSet, QRAuthenticatorConstants.TOKEN_USER_NAME, deviceId));
-                throw new AuthenticationFailedException(errorMessage);
-            }
-        } else {
-            String errorMessage = String
-                    .format("Authentication failed! JWT signature is not valid for device: %s", deviceId);
+                    .format("Authentication failed due to tenant domain mismatch: %s, %s",
+                            tenantDomainFromRequest, tenantDomainFromContext);
             throw new AuthenticationFailedException(errorMessage);
         }
-        contextManager.clearContext(getClaimFromClaimSet(claimsSet,
-                QRAuthenticatorConstants.TOKEN_SESSION_DATA_KEY, deviceId));
+
+        String bearerToken = request.getHeader("Authorization");
+
+        if (StringUtils.isBlank(bearerToken)) {
+            String errorMessage = String.format("Authentication failed!. Empty bearer token");
+            throw new AuthenticationFailedException(errorMessage);
+        }
+
+//        QRAuthContextManager contextManager = new QRAuthContextManagerImpl();
+//        AuthenticationContext sessionContext = contextManager.getContext(request
+//                .getParameter(QRAuthenticatorConstants.SESSION_DATA_KEY));
+//        AuthDataDTO authDataDTO = (AuthDataDTO) sessionContext
+//                .getProperty(QRAuthenticatorConstants.CONTEXT_AUTH_DATA);
+//
+//        String authResponseToken = authDataDTO.getAuthToken();
+//
+//        String deviceId = getDeviceIdFromToken(authResponseToken);
+//        String publicKey = getPublicKey(deviceId);
+//        String publicKey = "public key";
+//        QRJWTValidator validator = new QRJWTValidator();
+//        JWTClaimsSet claimsSet;
+//
+//        try {
+//            claimsSet = validator.getValidatedClaimSet(authResponseToken, publicKey);
+//        } catch (IdentityQRAuthException e) {
+//            String errorMessage = String
+//                    .format("Error occurred when trying to validate the JWT signature from device: %s.", deviceId);
+//            throw new AuthenticationFailedException(errorMessage, e);
+//        }
+//        if (claimsSet != null) {
+//
+//            String authStatus =
+//                    getClaimFromClaimSet(claimsSet, QRAuthenticatorConstants.TOKEN_RESPONSE, deviceId);
+//
+//            if (authStatus.equals(QRAuthenticatorConstants.AUTH_REQUEST_STATUS_SUCCESS)) {
+////                AuthenticatedUser authenticatedUserFromContext = getAuthenticatedUser(context);
+////                context.setSubject(authenticatedUserFromContext);
+//            } else {
+//                String errorMessage = String.format("Authentication failed! Auth status for user" +
+//                        " '%s' is not available in JWT.",
+//                        getClaimFromClaimSet(claimsSet, QRAuthenticatorConstants.TOKEN_USER_NAME, deviceId));
+//                throw new AuthenticationFailedException(errorMessage);
+//            }
+//        } else {
+//            String errorMessage = String
+//                    .format("Authentication failed! JWT signature is not valid for device: %s", deviceId);
+//            throw new AuthenticationFailedException(errorMessage);
+//        }
+//        contextManager.clearContext(getClaimFromClaimSet(claimsSet,
+//                QRAuthenticatorConstants.TOKEN_SESSION_DATA_KEY, deviceId));
     }
 
     /**

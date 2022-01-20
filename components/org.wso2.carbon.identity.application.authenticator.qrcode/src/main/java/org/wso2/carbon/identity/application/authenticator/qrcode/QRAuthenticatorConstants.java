@@ -26,9 +26,11 @@ public abstract class QRAuthenticatorConstants {
     public static final String AUTHENTICATOR_FRIENDLY_NAME = "QRCodeBased";
     public static final String USER_NAME = "username";
     public static final String QR_PAGE = "/authenticationendpoint/qrpage.jsp";
+    public static final String QR_MULTI_OPTION_PAGE = "/authenticationendpoint/qr-multioption.jsp";
     public static final String LOGIN_PAGE = "/authenticationendpoint/login.jsp";
     public static final String PROCEED_AUTH = "proceedAuthorization";
     public static final String SESSION_DATA_KEY = "sessionDataKey";
+    public static final String TENANT_DOMAIN = "tenantDomain";
     public static final String CONTEXT_AUTH_DATA = "authData";
     public static final String TOKEN_DEVICE_ID = "deviceId";
     public static final String TOKEN_USER_NAME = "usr";

@@ -159,7 +159,7 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>1.4.0</version>
+                <version>${maven.bundle.plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
                     <obrRepository>NONE</obrRepository>
@@ -191,6 +191,7 @@
     <properties>
         <equinox.osgi.services.version>3.3.100.v20130513-1956</equinox.osgi.services.version>
         <eclipse.osgi.version>3.9.1.v20130814-1242</eclipse.osgi.version>
+        <maven.bundle.plugin.version>3.2.0</maven.bundle.plugin.version>
         <maven.compiler.plugin.version>2.3.1</maven.compiler.plugin.version>
         <maven.scr.plugin.version>1.24.0</maven.scr.plugin.version>
         <identity.framework.version>5.18.187</identity.framework.version>
