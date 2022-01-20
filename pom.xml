@@ -29,6 +29,7 @@
     <modules>
         <module>components/org.wso2.carbon.identity.application.authenticator.qrcode</module>
         <module>components/org.wso2.carbon.identity.application.authenticator.qrcode.common</module>
+        <module>components/org.wso2.carbon.identity.api.user.qrcode.handler.v1</module>
     </modules>
 
     <name>WSO2 Carbon - QRCode-Based Authenticator</name>
@@ -122,6 +123,79 @@
                 <artifactId>org.eclipse.osgi</artifactId>
                 <version>${eclipse.osgi.version}</version>
             </dependency>
+            <dependency>
+                <groupId>javax.ws.rs</groupId>
+                <artifactId>javax.ws.rs-api</artifactId>
+                <version>${javax.ws.rs.version}</version>
+            </dependency>
+            <!-- API dependencies-->
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.user.api</artifactId>
+                <version>${org.wso2.carbon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.user.api</groupId>
+                <artifactId>org.wso2.carbon.identity.api.user.common</artifactId>
+                <version>${identity.api.user.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-jaxrs</artifactId>
+                <version>${swagger.jaxrs.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-databind</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-annotations</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.dataformat</groupId>
+                        <artifactId>jackson-dataformat-yaml</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.ws.rs</groupId>
+                        <artifactId>jsr311-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.google.guava</groupId>
+                        <artifactId>guava</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.jaxrs</groupId>
+                <artifactId>jackson-jaxrs-json-provider</artifactId>
+                <version>${jackson.jaxrs.json.provider.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+                <version>${cxf.bundle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-frontend-jaxws</artifactId>
+                <version>${cxf.bundle.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-rs-service-description</artifactId>
+                <version>${cxf.bundle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring.web.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -202,6 +276,15 @@
         <org.apache.felix.annotations.version>1.2.8</org.apache.felix.annotations.version>
         <nimbusds.version>7.3.0.wso2v1</nimbusds.version>
         <project.version>1.0.0</project.version>
+        <javax.ws.rs.version>2.1.1</javax.ws.rs.version>
+
+        <!-- API Versions -->
+        <build.helper.maven.plugin.version>1.8</build.helper.maven.plugin.version>
+        <identity.api.user.version>1.1.27</identity.api.user.version>
+        <jackson.jaxrs.json.provider.version>2.9.9</jackson.jaxrs.json.provider.version>
+        <swagger.jaxrs.version>1.5.20</swagger.jaxrs.version>
+        <cxf.bundle.version>3.3.5</cxf.bundle.version>
+        <spring.web.version>5.1.1.RELEASE</spring.web.version>
 
         <!-- Version Ranges -->
         <org.wso2.carbon.identity.version.range>[5.12,6)</org.wso2.carbon.identity.version.range>
