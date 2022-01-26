@@ -119,9 +119,9 @@
                             org.wso2.carbon.identity.application.authenticator.qrcode.internal,
                         </Private-Package>
                         <Export-Package>
-                            !org.wso2.carbon.identity.application.authenticator.qrcode.internal.*,
-                            org.wso2.carbon.identity.application.authenticator.qrcode.*;version="${project.version}",
-                            org.wso2.carbon.identity.application.authenticator.qrcode.dto
+                            !org.wso2.carbon.identity.application.authenticator.qrcode.internal,
+                            org.wso2.carbon.identity.application.authenticator.qrcode,
+                            org.wso2.carbon.identity.application.authenticator.qrcode.dto,
                         </Export-Package>
                     </instructions>
                 </configuration>

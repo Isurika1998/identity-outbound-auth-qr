@@ -17,36 +17,23 @@
  *
  */
 
-package org.wso2.carbon.identity.application.authenticator.qrcode.dto;
-
-import java.io.Serializable;
+package org.wso2.carbon.identity.application.authenticator.qrcode.servlet.model;
 
 /**
- * DTO class for holding authentication data.
+ * This class represents the status of the response sent from the mobile app.
  */
-public class AuthDataDTO implements Serializable {
+public class WaitStatus {
 
-    private static final long serialVersionUID = 5355319579322887235L;
-    private String tenantDomain;
-    private String clientID;
+    private String status;
 
-    public void setTenantDomain(String tenantDomain) {
+    public String getStatus() {
 
-        this.tenantDomain = tenantDomain;
+        return status;
     }
 
-    public String getTenantDomain() {
+    public void setStatus(String status) {
 
-        return this.tenantDomain;
+        this.status = status;
     }
 
-    public void setClientID(String clientID) {
-
-        this.clientID = clientID;
-    }
-
-    public String getClientID() {
-
-        return this.clientID;
-    }
 }
