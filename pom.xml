@@ -29,7 +29,6 @@
     <modules>
         <module>components/org.wso2.carbon.identity.application.authenticator.qrcode</module>
         <module>components/org.wso2.carbon.identity.application.authenticator.qrcode.common</module>
-        <module>components/org.wso2.carbon.identity.api.user.qrcode.handler.v1</module>
         <module>components/org.wso2.carbon.identity.application.authenticator.qrcode.servlet</module>
     </modules>
 

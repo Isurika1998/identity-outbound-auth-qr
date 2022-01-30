@@ -119,11 +119,77 @@
     <% } %>
 
     <script type="text/javascript">
+
         $(document).ready(function() {
             var key =  document.getElementById("ske").value;
             if(key != null) {
                 loadQRCode(key);
             }
+        });
+
+        let i = 0;
+        let sessionDataKey;
+        const refreshInterval = 1000;
+        const timeout = 900000;
+        let qrEndpointWithQueryParams = "<%=QRAuthenticatorConstants.QR_ENDPOINT +
+         QRAuthenticatorConstants.POLLING_QUERY_PARAMS%>";
+        const GET = 'GET';
+
+        $(document).ready(function () {
+            var startTime = new Date().getTime();
+            console.log("Start time: "+ startTime);
+
+            const intervalListener = window.setInterval(function () {
+                checkWaitStatus();
+                i++;
+                console.log("Polled ${i} times")
+            }, refreshInterval);
+
+            function checkWaitStatus() {
+                const now = new Date().getTime();
+                if ((startTime + timeout) < now) {
+                    window.clearInterval(intervalListener);
+                    window.location.replace("retry.do?statusMsg=qr.auth.timed.out.message&status=qr.auth.timed.out");
+                }
+
+                const urlParams = new URLSearchParams(window.location.search);
+                sessionDataKey = urlParams.get('sessionDataKey');
+                $.ajax(qrEndpointWithQueryParams + sessionDataKey, {
+                    async: false,
+                    cache : false,
+                    method: GET,
+                    success: function (res) {
+                        handleStatusResponse(res);
+                    },
+                    error: function () {
+
+                        checkWaitStatus();
+                    },
+                    failure: function () {
+                        window.clearInterval(intervalListener);
+                        window.location.replace("/retry.do");
+                    }
+                });
+            }
+
+            function handleStatusResponse(res) {
+
+                if ((res.status) === "<%=QRAuthenticatorConstants.COMPLETED%>") {
+                    document.getElementById("proceedAuthorization").value = "proceed";
+                    document.getElementById("sessionDataKey").value = sessionDataKey;
+                    continueAuthentication(res);
+                } else {
+                    checkWaitStatus();
+                }
+            }
+
+            function continueAuthentication(res) {
+                console.log("Continuing Auth request");
+
+                window.clearInterval(intervalListener);
+                document.getElementById("toCommonAuth").submit();
+            }
+
         });
  
     </script>

@@ -33,6 +33,8 @@ public abstract class QRAuthenticatorConstants {
     public static final String TENANT_DOMAIN = "tenantDomain";
     public static final String CONTEXT_AUTH_DATA = "authData";
     public static final String TOKEN_DEVICE_ID = "deviceId";
+    public static final String QR_ENDPOINT = "/qr-auth/check-status";
+    public static final String POLLING_QUERY_PARAMS = "?sessionDataKey=";
     public static final String TOKEN_USER_NAME = "usr";
     public static final String TOKEN_RESPONSE = "res";
     public static final String TOKEN_SESSION_DATA_KEY = "sid";
