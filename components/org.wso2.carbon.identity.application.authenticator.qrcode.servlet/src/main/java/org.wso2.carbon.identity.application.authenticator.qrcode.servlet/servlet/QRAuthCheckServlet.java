@@ -28,7 +28,6 @@ import org.wso2.carbon.identity.application.authenticator.qrcode.servlet.store.Q
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,11 +39,11 @@ public class QRAuthCheckServlet extends HttpServlet {
 
     private static final Log log = LogFactory.getLog(QRAuthCheckServlet.class);
     private static final long serialVersionUID = -913670970043040923L;
-    private final QRDataStore pushDataStoreInstance = QRDataStore.getInstance();
+    private final QRDataStore qrDataStoreInstance = QRDataStore.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
 
         if (!(request.getParameterMap().containsKey(InboundConstants.RequestProcessor.CONTEXT_KEY))) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -63,7 +62,7 @@ public class QRAuthCheckServlet extends HttpServlet {
      *
      * @param request  HTTP request
      * @param response HTTP response
-     * @throws IOException
+     * @throws IOException Failed/Interrupted I/O operations
      */
     private void handleWebResponse(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -73,7 +72,7 @@ public class QRAuthCheckServlet extends HttpServlet {
         response.setContentType(QRServletConstants.MEDIA_TYPE_JSON);
 
         String sessionDataKeyWeb = request.getParameter(InboundConstants.RequestProcessor.CONTEXT_KEY);
-        String status = pushDataStoreInstance.getAuthStatus(sessionDataKeyWeb);
+        String status = qrDataStoreInstance.getAuthStatus(sessionDataKeyWeb);
         if (status == null) {
             waitStatus.setStatus(QRServletConstants.Status.PENDING.name());
 
@@ -82,7 +81,7 @@ public class QRAuthCheckServlet extends HttpServlet {
             }
         } else if (status.equals(QRServletConstants.Status.COMPLETED.name())) {
             waitStatus.setStatus(QRServletConstants.Status.COMPLETED.name());
-            pushDataStoreInstance.removeQRData(sessionDataKeyWeb);
+            qrDataStoreInstance.removeQRData(sessionDataKeyWeb);
 
             if (log.isDebugEnabled()) {
                 log.debug("Mobile authentication has been received. Proceeding to authenticate.");

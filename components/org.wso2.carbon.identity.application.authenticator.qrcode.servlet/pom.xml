@@ -124,7 +124,6 @@
                             org.osgi.service.component;version="${org.osgi.service.version.range}",
                             org.osgi.service.http;version="${org.osgi.service.version.range}",
                             org.wso2.carbon.identity.application.authenticator.qrcode.dto,
-                            org.wso2.carbon.identity.application.authenticator.qrcode.exception,
                             org.wso2.carbon.identity.application.authenticator.qrcode.common,
                             org.wso2.carbon.identity.application.authenticator.qrcode.common.impl,
                             org.wso2.carbon.identity.application.authenticator.qrcode.common.exception,
