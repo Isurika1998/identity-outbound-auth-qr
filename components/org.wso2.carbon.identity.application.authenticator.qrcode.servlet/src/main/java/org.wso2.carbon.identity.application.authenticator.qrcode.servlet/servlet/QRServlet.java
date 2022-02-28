@@ -48,7 +48,7 @@ public class QRServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
+            throws IOException {
 
         handleMobileResponse(request, response);
     }
@@ -58,7 +58,7 @@ public class QRServlet extends HttpServlet {
      *
      * @param request  HTTP request
      * @param response HTTP response
-     * @throws IOException
+     * @throws IOException Failed/Interrupted I/O operations
      */
     private void handleMobileResponse(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
